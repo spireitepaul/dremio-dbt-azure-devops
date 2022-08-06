@@ -1,15 +1,15 @@
 # dremio-dbt-azure-devops
 This repo contains some examples of azure devops MS-hosted pipelines when using 1.0.6 of dremio-dbt
 
-azure-pipelines-docker
+## azure-pipelines-docker
 
 This executes dbt-dremio in a docker build process (Centos7, Pyton) on an MS-hosted ubuntu image
 
-Assumption:
+## Assumption:
 
 You have a DEV, UAT and PROD environment
 
-Requirements:
+## Pipeline prerequisites:
 The following variables should be defined in the pipeline (assuming the three environments)
 
 DEV_DREMIO_HOST
