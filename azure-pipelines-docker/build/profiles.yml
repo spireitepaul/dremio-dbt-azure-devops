@@ -1,0 +1,15 @@
+myprofile: # this needs to match the profile: in your dbt_project.yml file
+  target: deploy
+  outputs:  
+    deploy:
+      type: dremio
+      threads: 2
+      driver:  Dremio ODBC Driver 64-bit
+      host:  "{{ env_var('DREMIO_HOST') }}" 
+      port:  31010 
+      environment: "{{ env_var('SOURCEBRANCH') }}"
+      database: 'yourspace'
+      # database is actually the space!
+      schema: 'no_schema'
+      user:  "{{ env_var('DREMIO_USER') }}"
+      password:  "{{ env_var('DREMIO_PWD') }}"    

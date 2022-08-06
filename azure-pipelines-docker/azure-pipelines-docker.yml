@@ -1,0 +1,34 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - dev
+    - uat
+    - prod
+
+pool:
+  vmImage: ubuntu-20.04
+
+variables:
+  location: ./build
+
+steps:
+
+# map ssh key into container - volume link?
+# map public key into container
+# should pass in approriate values for host, user, passeord, branch, host entry
+- script: |
+    if [ "$(Build.SourceBranchName)" == "dev" ]; then
+      DOCKER_BUILDKIT=1 docker build -t dd/dbtimage --build-arg DEV_HOST=$(DEV_DREMIO_HOST) --build-arg DEV_USER=$(DEV_DREMIO_USER) --build-arg DEV_PWD=$(DEV_DREMIO_PWD) --build-arg BRANCH=$(Build.SourceBranchName) --network host . 
+    elif [ "$(Build.SourceBranchName)" == "uat" ]; then
+      DOCKER_BUILDKIT=1 docker build -t dd/dbtimage --build-arg DEV_HOST=$(UAT_DREMIO_HOST) --build-arg DEV_USER=$(UAT_DREMIO_USER) --build-arg DEV_PWD=$(UAT_DREMIO_PWD) --build-arg BRANCH=$(Build.SourceBranchName) --network host .  
+    elif [ "$(Build.SourceBranchName)" == "prod" ]; then
+      DOCKER_BUILDKIT=1 docker build -t dd/dbtimage --build-arg DEV_HOST=$(PROD_DREMIO_HOST) --build-arg DEV_USER=$(PROD_DREMIO_USER) --build-arg DEV_PWD=$(PROD_DREMIO_PWD) --build-arg BRANCH=$(Build.SourceBranchName) --network host .  
+    fi
+  displayName: Build image
+
+  
